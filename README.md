@@ -18,15 +18,21 @@ Create a catkin workspace:
 mkdir -p ~/catkin_ws/src
 ```
 
-Go to your catkin workspace and build it:
+Go to your catkin workspace and build the driver
 ```
-cd ~catkin_ws/src/   
-git clone https://github.com/thesensorpeople/leuze_rsl_ros1_drivers.git  
+cd ~catkin_ws/src/
+#Copy the complete source code of this driver into the current folder, for example by cloning it from github
+git clone https://github.com/thesensorpeople/leuze_rsl_ros1_drivers.git
+#Navigate to the main workspace folder:
 cd ..
+#Install the required dependencies
 rosdep install --from-paths src --ignore-src -r -y
+#Build the driver
 catkin_make
+#Next, you need to source this workspace so that ROS2 can see the new packages:
 source ~catkin_ws/devel/setup.bash
 ```
+
 
 ## Scanner Setup
 
@@ -66,9 +72,9 @@ This driver stack requires the Phidget Interface Kit drivers in order to interfa
 ```
 sudo apt install ros-<distro>-phidgets-ik
 ```
-where `<distro>` is your distribution of ROS *(Kinetic/Melodic)*.
+where `<distro>` is your distribution of ROS *(Kinetic/Melodic)*.   
 
-You can make sure you have everything else you need by running the following from your workspace directory:
+You can make sure you have everything else you need by running the following from your workspace directory:   
 ```
 rosdep install --from-paths src --ignore-src -r -y
 ```    
@@ -81,11 +87,12 @@ rosdep install --from-paths src --ignore-src -r -y
 `leuze_ros_drivers` : Metapackage of this stack.   
 `leuze_rsl_driver` : Contains the main driver source code and its tests.   
 
-## Bringup
+## Starting the driver (Bringup)
 You can start the Leuze RSL ROS driver by running :   
 ```
 roslaunch leuze_bringup leuze_bringup.launch sensor_ip:=<sensor ip> port:=<port>
 ```
+
 #### Parameters
 `sensor_ip` : The IPv4 address of the laser scanner. This can be configured from the Sensor Studio software tool in Windows. The scanner also displays its currently configured IP during power on startup.   
 `port`: The port number of the scanner. Can be similarly configured on Sensor Studio, but not displayed on the sensor during startup.   
