@@ -3,11 +3,21 @@
   <arg name="sensor_ip" value="127.0.0.1" />
   <arg name="port" default="9900"/>
 
-    <include file="$(find leuze_bringup)/launch/leuze_bringup.launch">
+    <include file="$(find leuze_bringup)/launch/leuze_bringup_rsl200.launch">
       <arg name="sensor_ip" value="$(arg sensor_ip)" />
       <arg name="port" value="$(arg port)" />
     </include>
 
-    <include file="$(find leuze_bringup)/launch/leuze_phidget_driver.launch"/>
+    <include file="$(find leuze_bringup)/launch/leuze_bringup_rsl400.launch">
+      <arg name="sensor_ip" value="$(arg sensor_ip)" />
+      <arg name="port" value="$(arg port)" />
+    </include>
+
+    <include file="$(find leuze_bringup)/launch/leuze_phidget_driver_rsl200.launch"/>
+
+    <!--
+    Commented out because we cannot have multiple nodes with the name /phidgets_ik
+    <include file="$(find leuze_bringup)/launch/leuze_phidget_driver_rsl400.launch"/>
+    -->
 
 </launch>

@@ -8,9 +8,12 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_message_files(
   FILES
-  ExtendedStatusProfileMsg.msg
-  PhidgetIKInputMsg.msg
-  PhidgetIKOutputMsg.msg
+  ExtendedStatusProfileMsg_rsl200.msg
+  ExtendedStatusProfileMsg_rsl400.msg
+  PhidgetIKInputMsg_rsl200.msg
+  PhidgetIKOutputMsg_rsl200.msg
+  PhidgetIKInputMsg_rsl400.msg
+  PhidgetIKOutputMsg_rsl400.msg
 )
 
 generate_messages(

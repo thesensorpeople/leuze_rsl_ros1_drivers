@@ -1,3 +1,7 @@
+// Copyright 2019 Fraunhofer Institute for Manufacturing Engineering and Automation (IPA)
+// Copyright 2019 Leuze electronic GmbH + Co. KG
+// Licensed under the Apache License, Version 2.0
+
 #ifndef LEUZE_DATA_TYPE_H
 #define LEUZE_DATA_TYPE_H
 
@@ -39,7 +43,7 @@ struct Frame
   uint32_t scan_number;
 };
 
-struct DatagramExtendedStatusProfile
+struct DatagramExtendedStatusProfile_rsl400
 {
   struct StatusProfile
   {
@@ -83,6 +87,53 @@ struct DatagramExtendedStatusProfile
               /(double)measurement_contour_descritption.index_interval)
             );
     //As per the formula from UDP spec sheet pg 13 below table 3.4 as well as the expression used in udpstateimage.h_ex line 102
+  }
+};
+
+
+
+struct DatagramExtendedStatusProfile_rsl200
+{
+  struct StatusProfile
+  {
+    uint8_t imageType;
+    uint8_t op_mode;
+    uint8_t errorBits;
+    uint8_t detectionStateBits;
+    uint8_t triple_sel;
+    uint8_t aux;
+    uint8_t inputBits;
+    uint8_t outputBits;
+    uint16_t volt;
+    int16_t temp;
+    int16_t level_x;
+    int16_t level_y;
+    uint32_t scan_number;
+    uint32_t safe_sig;
+    uint32_t errDw;
+
+  };
+
+  struct MeasurementContourDescription
+  {
+    uint16_t start_index;
+    uint16_t stop_index;
+    uint16_t index_interval;
+    uint16_t reseved; // [RSL400 uint8_t reserved]
+  };
+
+
+  Frame frame;
+  StatusProfile status_profile;
+  MeasurementContourDescription measurement_contour_descritption;
+
+  int getBeamCount()
+  {
+    return (1 + (int)ceil(
+              (measurement_contour_descritption.stop_index - measurement_contour_descritption.start_index)
+              /(double)measurement_contour_descritption.index_interval)
+            );
+    // As per the formula from UDP spec sheet pg 13 below table 3.4 as well as the expression used in udpstateimage.h_ex line 102
   }
 };
 
