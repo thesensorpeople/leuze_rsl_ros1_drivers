@@ -3,6 +3,6 @@
 
 <node name="phidgets_ik" pkg="phidgets_ik" type ="phidgets_ik_node" output="screen"/>
 
-<node name="leuze_phidget_driver_node" type="leuze_phidget_driver_node" pkg="leuze_phidget_driver" output="screen" />
+<node name="leuze_phidget_driver_node" type="leuze_phidget_driver_node_rsl200" pkg="leuze_phidget_driver" output="screen" />
 
 </launch>

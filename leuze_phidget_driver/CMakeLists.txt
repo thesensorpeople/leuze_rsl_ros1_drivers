@@ -21,10 +21,35 @@ catkin_package(
   CATKIN_DEPENDS roscpp leuze_msgs std_msgs
 )
 
-add_executable(leuze_phidget_driver_node src/leuze_phidget_driver_node.cpp
-                                         src/leuze_phidget_driver.cpp)
-target_link_libraries(leuze_phidget_driver_node ${catkin_LIBRARIES})
-add_dependencies(leuze_phidget_driver_node ${catkin_EXPORTED_TARGETS})
 
-install(TARGETS leuze_phidget_driver_node RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+#------------------RSL400---------------------------
+add_library( rsl400_phidget_def_lib INTERFACE )
+
+target_compile_definitions( rsl400_phidget_def_lib INTERFACE -DRSL400 )
+add_executable(leuze_phidget_driver_node_rsl400 src/leuze_phidget_driver_node.cpp
+                                         src/leuze_phidget_driver.cpp
+                                         src/leuze_phidget_driver_rsl400.cpp)
+
+
+target_link_libraries(leuze_phidget_driver_node_rsl400 ${catkin_LIBRARIES} rsl400_phidget_def_lib)
+add_dependencies(leuze_phidget_driver_node_rsl400 ${catkin_EXPORTED_TARGETS})
+
+install(TARGETS leuze_phidget_driver_node_rsl400 RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(DIRECTORY include/ DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION})
+
+
+
+#------------------RSL200---------------------------
+add_library( rsl200_phidget_def_lib INTERFACE )
+
+target_compile_definitions( rsl200_phidget_def_lib INTERFACE -DRSL200 )
+add_executable(leuze_phidget_driver_node_rsl200 src/leuze_phidget_driver_node.cpp
+                                         src/leuze_phidget_driver.cpp
+                                         src/leuze_phidget_driver_rsl200.cpp)
+
+
+target_link_libraries(leuze_phidget_driver_node_rsl200 ${catkin_LIBRARIES} rsl200_phidget_def_lib)
+add_dependencies(leuze_phidget_driver_node_rsl200 ${catkin_EXPORTED_TARGETS})
+
+install(TARGETS leuze_phidget_driver_node_rsl200 RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(DIRECTORY include/ DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION})

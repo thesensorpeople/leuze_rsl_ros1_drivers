@@ -123,7 +123,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.00999999978
       Style: Flat Squares
-      Topic: /scan1/scan
+      Topic: /scan1
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true

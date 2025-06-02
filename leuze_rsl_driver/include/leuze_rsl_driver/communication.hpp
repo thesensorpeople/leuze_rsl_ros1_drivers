@@ -1,16 +1,6 @@
-// Copyright 2019 Fraunhofer IPA
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright 2019 Fraunhofer Institute for Manufacturing Engineering and Automation (IPA)
+// Copyright 2019 Leuze electronic GmbH + Co. KG
+// Licensed under the Apache License, Version 2.0
 
 #ifndef LEUZE_COMMUNICATION_H
 #define LEUZE_COMMUNICATION_H
@@ -21,6 +11,7 @@
 #include <boost/thread.hpp>
 #include <mutex>
 #include <condition_variable>
+#include "udp_sim.hpp"
 
 class DataParser
 {
@@ -136,14 +127,26 @@ public:
             udp_socket->close();
     }
 
+
 private:
     void async_read(std::size_t s, boost::function<void(Connection *conn, const boost::system::error_code &ec, std::size_t n)> handle_packet)
     {
+#ifndef SIMULATION
         boost::asio::streambuf::mutable_buffers_type bufs = buf.prepare(s);
+
+        // This is no simulation => Receive data from a real sensor:
         udp_socket->async_receive_from(boost::asio::buffer(bufs), udp_endpoint,
                                        boost::bind(handle_packet, this,
                                                    boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+#else
+        // Create a thread for background data generator
+        boost::thread thr(&UdpSim::data_generator, handle_read);
+
+        // Let the thread run independently from the main thread:
+        thr.detach();
+#endif
     }
+
 
     boost::asio::ip::udp::socket *udp_socket;
     boost::asio::ip::udp::endpoint udp_endpoint;
